@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MUserMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into m_user(
+			phone,
+			passwd,
+			username,
+			company,
+			industry,
+			regDate
+		) values (
+			#{phone}
+		,
+			#{passwd}
+		,
+			#{username}
+		,
+			#{company}
+		,
+			#{industry}
+		,
+			#{regDate}
+			 
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from m_user
+		where 
+			id = #{id}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  m_user
+			set 
+				phone = #{phone}
+		,
+				passwd = #{passwd}
+		,
+				username = #{username}
+		,
+				company = #{company}
+		,
+				industry = #{industry}
+		,
+				regDate = #{regDate}
+			
+			where 
+				id = #{id}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			id
+		,
+			phone
+		,
+			passwd
+		,
+			username
+		,
+			company
+		,
+			industry
+		,
+			regDate
+		from 
+			m_user
+		where 
+			id = #{id}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.id
+		,
+				a.phone
+		,
+				a.passwd
+		,
+				a.username
+		,
+				a.company
+		,
+				a.industry
+		,
+				a.regDate
+				 
+		from 
+				m_user a
+		where 1=1 
+		<if test="pd.field1 != null and pd.field1 != ''">
+			and ( a.phone = #{pd.field1}) 
+		</if>
+		<if test="pd.lastLoginStart != null and pd.lastLoginStart != '' and pd.lastLoginEnd != null and pd.lastLoginEnd != ''">
+			and ( a.regDate between   #{pd.lastLoginStart} and #{pd.lastLoginEnd}) 
+		</if>
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.id
+		,
+				a.phone
+		,
+				a.passwd
+		,
+				a.username
+		,
+				a.company
+		,
+				a.industry
+		,
+				a.regDate
+				 
+		from 
+				m_user a
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from m_user
+		where 
+			id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>
